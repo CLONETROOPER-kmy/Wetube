@@ -1,14 +1,11 @@
 import express, { response } from "express";
 // const express = require("express");
+import morgan from "morgan";
 
 const PORT = 4300;
 
 const app = express();
-
-const logger = (req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-};
+const logger = morgan("dev");
 
 const privateMiddleware = (req, res, next) => {
   const url = req.url;
