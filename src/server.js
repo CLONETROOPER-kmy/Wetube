@@ -2,23 +2,18 @@ import express, { response } from "express";
 // const express = require("express");
 import morgan from "morgan";
 
+import globalRouter from "./routers/globalRouter";
+import userRouter from "./routers/userRouter";
+import videoRouter from "./routers/videoRouter";
+
 const PORT = 4300;
 
 const app = express();
 const logger = morgan("dev");
+app.use(logger);
 
-const privateMiddleware = (req, res, next) => {
-  const url = req.url;
-  if (url === "/protected") {
-    return res.send("<h1>Get Out Of My Home!<h1>");
-  }
-  next();
-};
-
-app.use(logger, privateMiddleware);
-
-app.get("/", (request, response) => {
-  return response.send("hi");
-});
+app.use("/", globalRouter);
+app.use("/users", userRouter);
+app.use("/videos", videoRouter);
 
 app.listen(PORT, () => console.log(`Server listening on port http://localhost:${PORT}`));
